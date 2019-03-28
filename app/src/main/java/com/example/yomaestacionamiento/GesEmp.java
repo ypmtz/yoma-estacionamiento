@@ -14,13 +14,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
+import java.sql.Statement;
 
 
 public class GesEmp extends AppCompatActivity {
 
     ConexionSQL CONN;
     EditText editTextNUMEMPLEADO, editTextNOMEMPLEADO, editTextAP_P, editTextAP_M, editTextTEL_EMP, editTextDOMEMP, editTextCORR_EMP, editTextTIPO_EMP, editTextEST_EMP;
-    Button bt_guardar, bt_mostrar;
+    Button bt_guardar, bt_mostrar, btn_modifcarEmpleado;
+
 
 
     @Override
@@ -40,6 +43,7 @@ public class GesEmp extends AppCompatActivity {
         editTextEST_EMP = (EditText) findViewById(R.id.editTextEST_EMP);
         bt_guardar = (Button) findViewById(R.id.bt_guardar);
         bt_mostrar = (Button) findViewById(R.id.bt_mostrar);
+        btn_modifcarEmpleado = (Button) findViewById(R.id.btn_modificar);
 
         editTextNUMEMPLEADO.setEnabled(false);
         editTextTIPO_EMP.setEnabled(false);
@@ -56,8 +60,16 @@ public class GesEmp extends AppCompatActivity {
         bt_mostrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ve = new Intent(GesEmp.this, Listado.class);
-                startActivity(ve);
+                consultarEmpleado();
+              // Intent ve = new Intent(GesEmp.this, Listado.class);
+               // startActivity(ve);
+            }
+        });
+
+        btn_modifcarEmpleado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modificar();
             }
         });
     }
@@ -105,4 +117,112 @@ public class GesEmp extends AppCompatActivity {
         }
 
     }
-}
+
+    public void consultarEmpleado(){
+        String nombre= editTextNOMEMPLEADO.getText().toString();
+
+
+        String id = null;
+        String app= null;
+        String appm= null;
+        String telefono= null;
+        String direcion= null;
+        String correo= null;
+        String tipo= null;
+        String estatus = null;
+
+        if (nombre.trim().equals("")) {
+           //toast
+        } else {
+            Connection conn = CONN.CONN();
+            System.out.println("conex: "+conn);
+            String query = "select * from Empleados where Nombre='" +nombre+"'";
+
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                if (rs.next()) {
+                    id=rs.getString("id_empleado");
+                    app=rs.getString("Ap_p");
+                    appm=rs.getString("Ap_m");
+                    telefono=rs.getString("Telefono");
+                    direcion=rs.getString("Domicilio");
+                    correo=rs.getString("Correo");
+                    tipo=rs.getString("Tipo");
+                    estatus=rs.getString("Estatus");
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        editTextNUMEMPLEADO.setText(id);
+        editTextAP_M.setText(appm);
+        editTextAP_P.setText(app);
+        editTextTEL_EMP.setText(telefono);
+        editTextDOMEMP.setText(direcion);
+        editTextCORR_EMP.setText(correo);
+        editTextTIPO_EMP.setText(tipo);
+        editTextEST_EMP.setText(estatus);
+
+
+
+    }
+    public void modificar(){
+        //consultarEmpleado();
+    String id =editTextNUMEMPLEADO.getText().toString();
+    String nombre =editTextNOMEMPLEADO.getText().toString();
+
+        String app= editTextAP_P.getText().toString();
+        String appm= editTextAP_M.getText().toString();
+        String telefono= editTextTEL_EMP.getText().toString();
+        String direcion= editTextDOMEMP.getText().toString();
+        String correo= editTextCORR_EMP.getText().toString();
+        String tipo= editTextTIPO_EMP.getText().toString();
+        String estatus = editTextEST_EMP.getText().toString();
+
+
+
+        Connection conn = CONN.CONN();
+        System.out.println("conex: "+conn);
+        String query =" update Empleados set Nombre='"+nombre+"',Ap_p='"+app+"',Ap_m='"+appm+"',Telefono='"+telefono+"',Domicilio='"+direcion+"',Correo='"+correo+"',Tipo='"+tipo+"',Estatus='"+estatus+"' where Id_empleado='"+id+"'";
+
+        try {
+            int i=1;
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            if (rs.rowUpdated()) {
+
+                Toast.makeText(getApplicationContext(), "Empleado modificado ", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+    }
+
+
+
+    }
+
+
+

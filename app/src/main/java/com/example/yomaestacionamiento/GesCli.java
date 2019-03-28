@@ -14,7 +14,7 @@ public class GesCli extends AppCompatActivity {
 
     ConexionSQL CONN;
     EditText editTextNUMEMPLEADO, editTextNOMEMPLEADO, editTextAP_P, editTextAP_M, editTextTEL_EMP, editTextDOMEMP, editTextCORR_EMP, editTextTIPO_EMP, editTextEST_EMP;
-    Button bt_guardarCliente,bt_mostrarCliente;
+    Button bt_guardarCliente,bt_mostrarCliente, btn_modificarCliente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class GesCli extends AppCompatActivity {
         editTextEST_EMP = (EditText) findViewById(R.id.editTextEST_EMP);
         bt_guardarCliente=(Button)findViewById(R.id.bt_guardarCliente);
         bt_mostrarCliente=(Button)findViewById(R.id.bt_mostrarCliente);
+       // btn_modificarCliente = (Button) findViewById(R.id.btn_modificarCliente);
 
         editTextNUMEMPLEADO.setEnabled(false);
         editTextTIPO_EMP.setEnabled(false);

@@ -173,6 +173,12 @@
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/btn_modificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Modificar" />
+
+            <Button
                 android:id="@+id/bt_mostrar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
